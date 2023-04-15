@@ -61,7 +61,7 @@ in
  
   console = {
     font = "Lat2-Terminus16";
-    keyMap = "us";
+    # keyMap = "us";
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
