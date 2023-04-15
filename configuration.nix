@@ -38,7 +38,7 @@ in
   networking.hostName = "Alpha"; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
-   Enable networking
+  # Enable networking
   networking.networkmanager.enable = true;
 
   # Set your time zone.
