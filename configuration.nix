@@ -38,8 +38,6 @@ in
   networking.hostName = "Alpha"; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
-  # Enable networking
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -73,7 +71,7 @@ in
   services.xserver.displayManager.defaultSession = "none+bspwm";
   # services.xserver.desktopManager.gnome.enable = true;
   services.xserver.videoDrivers = [ "amdgpu" ];
-  ervices.xserver.windowManager.bspwm = {
+  services.xserver.windowManager.bspwm = {
     enable = true;
     configFile = ./config/bspwmrc;
     sxhkd.configFile = ./config/sxhkdrc;
@@ -115,8 +113,8 @@ in
   ###########
   nixpkgs.config.allowUnfree = true;
   
-  Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${user} = {
+ # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.deuce = {
     isNormalUser = true;
     initialPassword = "password";
     extraGroups = [  "sudo" "wheel""video""audio""camera""networkmanager""lp""scanner""kvm""libvirtd"]; # Enable ‘sudo’ for the user.
@@ -169,7 +167,7 @@ in
       
     ];
     shell = pkgs.zsh; 
-    openssh.authorizedKeys.keys = keys;
+    #openssh.authorizedKeys.keys = keys;
   };
 
 
@@ -225,7 +223,7 @@ in
     openssh = {                             # SSH: secure shell (remote connection to shell of server)
       enable = true;                        # local: $ ssh <user>@<ip>
       allowSFTP = true;                     # SFTP: secure file transfer protocol (send file to server)
-      settings.passwordAuthentication = false;
+      # settings.passwordAuthentication = false;
      
     };
 
@@ -318,7 +316,6 @@ in
    fonts.fonts = with pkgs; [
     dejavu_fonts
     emacs-all-the-icons-fonts
-    feather-font
     jetbrains-mono
     hack-font
     font-awesome
