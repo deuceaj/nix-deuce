@@ -21,7 +21,7 @@ in
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot/efi"; # /boot will probably work too
+      efiSysMountPoint = "/boot"; # /boot will probably work too
     };
     grub = {                          # Using grub means first 2 lines can be removed
       enable = true;
