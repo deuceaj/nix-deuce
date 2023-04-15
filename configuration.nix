@@ -67,8 +67,12 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.defaultSession = "none+bspwm";
+   services.xserver.displayManager.defaultSession = "none+bspwm";
+  services.xserver.displayManager.lightdm = {
+    enable = true;
+    greeters.slick.enable = true;
+    background = ./config/login-wallpaper.png;
+  };
   # services.xserver.desktopManager.gnome.enable = true;
   services.xserver.videoDrivers = [ "amdgpu" ];
   services.xserver.windowManager.bspwm = {
