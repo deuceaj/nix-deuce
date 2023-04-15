@@ -118,6 +118,7 @@ in
   Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
+    initialPassword = "password";
     extraGroups = [  "sudo" "wheel""video""audio""camera""networkmanager""lp""scanner""kvm""libvirtd"]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
     alacritty
@@ -141,6 +142,7 @@ in
     polybar
     rofi
     rofi-calc
+    sddm
     spotify
     steam
     sxhkd
