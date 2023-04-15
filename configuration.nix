@@ -65,21 +65,38 @@ in
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-   services.xserver.displayManager.defaultSession = "none+bspwm";
-  services.xserver.displayManager.lightdm = {
-    enable = true;
-    greeters.slick.enable = true;
-    background = ./config/login-wallpaper.png;
+  # # Enable the X11 windowing system.
+  # services.xserver.enable = true;
+  # services.xserver.displayManager.defaultSession = "none+bspwm";
+  # services.xserver.displayManager.lightdm.enable = true;
+  # # services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.videoDrivers = [ "amdgpu" ];
+  # services.xserver.windowManager.bspwm = {
+  #   enable = true;
+  #   configFile = ./config/bspwmrc;
+  #   sxhkd.configFile = ./config/sxhkdrc;
+  # };
+
+
+services = {
+    xserver = {
+      enable = true;
+      videoDrivers = [ "amdgpu" ];
+      displayManager = {
+        lightdm.enable = true;
+        defaultSession = "none+bspwm";
+      };
+      desktopManager.xfce.enable = true;
+      windowManager.bspwm = {
+      enable = true;
+      configFile = ./config/bspwmrc;
+      sxhkd.configFile = ./config/sxhkdrc;
+      };
+      layout = "us";
+          };
   };
-  # services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
-  services.xserver.windowManager.bspwm = {
-    enable = true;
-    configFile = ./config/bspwmrc;
-    sxhkd.configFile = ./config/sxhkdrc;
-  };
+
+
 
   # Enable Security
   security.rtkit.enable = true;
