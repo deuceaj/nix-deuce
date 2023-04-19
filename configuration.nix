@@ -21,7 +21,7 @@ in
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot"; # /boot will probably work too
+      efiSysMountPoint = "/boot/efi"; # /boot will probably work too
     };
     grub = {                          # Using grub means first 2 lines can be removed
       enable = true;
@@ -83,7 +83,7 @@ services = {
       enable = true;
       videoDrivers = [ "amdgpu" ];
       displayManager = {
-        lightdm.enable = true;
+        sddm.enable = true;
         defaultSession = "none+bspwm";
       };
       desktopManager.xfce.enable = true;
@@ -102,10 +102,7 @@ services = {
   security.rtkit.enable = true;
   security.polkit.enable = true;
 
-   # Configure keymap in X11
-  services.xserver = {    
-    xkbVariant = "";
-  };
+
 
  
 
@@ -123,8 +120,8 @@ services = {
   hardware.opengl.enable = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.driSupport = true;
-  hardware.nvidia.modesetting.enable = true;
-
+  # hardware.nvidia.modesetting.enable = true;
+  
   # Enable Xbox support
   hardware.xone.enable = true;
 
