@@ -14,30 +14,14 @@ in
       ./hardware-configuration.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  # boot.loader.systemd-boot.enable = true;
-  # boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.loader = {
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot/efi"; # /boot will probably work too
-    };
-    grub = {                          # Using grub means first 2 lines can be removed
-      enable = true;
-      #device = ["nodev"];            # Generate boot menu but not actually installed
-      devices = ["nodev"];            # Install grub
-      efiSupport = true;
-      useOSProber = true;             # Or use extraEntries like seen with Legacy
-    };                                # OSProber will probably not find windows partition on first install
-  };
-
+  # Bootloader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.initrd.kernelModules = [ "amdgpu" ];
 
-
   networking.hostName = "Alpha"; # Define your hostname.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
+  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -57,26 +41,12 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-
- 
-  console = {
-    font = "Lat2-Terminus16";
-    # keyMap = "us";
-    useXkbConfig = true; # use xkbOptions in tty.
-  };
-
-  # # Enable the X11 windowing system.
+  # Enable the X11 windowing system.
   # services.xserver.enable = true;
-  # services.xserver.displayManager.defaultSession = "none+bspwm";
-  # services.xserver.displayManager.lightdm.enable = true;
-  # # services.xserver.desktopManager.gnome.enable = true;
-  # services.xserver.videoDrivers = [ "amdgpu" ];
-  # services.xserver.windowManager.bspwm = {
-  #   enable = true;
-  #   configFile = ./config/bspwmrc;
-  #   sxhkd.configFile = ./config/sxhkdrc;
-  # };
 
+  # Enable the KDE Plasma Desktop Environment.
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
 
 services = {
     xserver = {
@@ -84,9 +54,9 @@ services = {
       videoDrivers = [ "amdgpu" ];
       displayManager = {
         sddm.enable = true;
-        defaultSession = "none+bspwm";
+        # defaultSession = "none+bspwm";
       };
-      desktopManager.xfce.enable = true;
+      desktopManager.plama5.enable = true;
       windowManager.bspwm = {
       enable = true;
       configFile = ./config/bspwmrc;
@@ -97,23 +67,38 @@ services = {
   };
 
 
+  # Configure keymap in X11
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+  };
 
   # Enable Security
-  security.rtkit.enable = true;
   security.polkit.enable = true;
 
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
 
-
- 
-
-  # Enable sound.
-  sound = {                                # Deprecated due to pipewire
+  # Enable sound with pipewire.
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
     enable = true;
-    mediaKeys = {
-      enable = true;
-    };
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
   };
-  hardware.pulseaudio.enable = true;
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+
 
 
   # Video support
@@ -125,15 +110,11 @@ services = {
   # Enable Xbox support
   hardware.xone.enable = true;
 
-  ###########
-  # PACKAGES 
-  ###########
-  nixpkgs.config.allowUnfree = true;
-  
- # Define a user account. Don't forget to set a password with ‘passwd’.
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.deuce = {
     isNormalUser = true;
-    initialPassword = "password";
+    description = "deuce";
     extraGroups = [  "sudo" "wheel""video""audio""camera""networkmanager""lp""scanner""kvm""libvirtd"]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
     alacritty
@@ -181,11 +162,35 @@ services = {
     imagemagick
     flameshot
     partition-manager
-      
     ];
     shell = pkgs.zsh; 
-    #openssh.authorizedKeys.keys = keys;
   };
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  #  wget
+  ];
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+    # services.openssh.enable = true;
+
+
+
 
 
   ######################
@@ -344,35 +349,26 @@ services = {
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  # ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
-  # List services that you want to enable:
 
-  
+
+
+
+
+
+
+
+
+
+
+
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
