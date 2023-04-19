@@ -56,7 +56,7 @@ services = {
         sddm.enable = true;
         # defaultSession = "none+bspwm";
       };
-      desktopManager.plama5.enable = true;
+      desktopManager.plasma5.enable = true;
       windowManager.bspwm = {
       enable = true;
       configFile = ./config/bspwmrc;
