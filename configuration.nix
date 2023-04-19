@@ -63,15 +63,12 @@ services = {
       sxhkd.configFile = ./config/sxhkdrc;
       };
       layout = "us";
+      xkbVariant = "";
           };
   };
 
 
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
+
 
   # Enable Security
   security.polkit.enable = true;
