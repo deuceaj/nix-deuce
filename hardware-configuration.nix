@@ -4,27 +4,29 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-imports =
+  imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
       (modulesPath + "/profiles/qemu-guest.nix")
     ];
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "virtio_pci" "sr_mod" "virtio_blk"];
+
+
+   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "virtio_pci" "sr_mod" "virtio_blk"];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/93ec5a49-92d9-4e6d-bc54-0b8668fe4891";
+    { device = "/dev/disk/by-uuid/529b8acd-20a2-4cff-9152-1eef3129987e";
       fsType = "ext4";
     };
 
   fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/2C98-002C";
+    { device = "/dev/disk/by-uuid/4A4A-820D";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/d505c55a-eafc-4347-96c5-29442204c6ef"; }
+    [ { device = "/dev/disk/by-uuid/79310529-0808-41d8-ad49-702b2509b7bd"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
