@@ -137,6 +137,7 @@ services = {
   users.users.deuce = {
     isNormalUser = true;
     description = "deuce";
+    initialPassword = "password";
     extraGroups = [  "sudo" "wheel""video""audio""camera""networkmanager""lp""scanner""kvm""libvirtd"]; 
     packages = with pkgs; [
     alacritty
