@@ -1,6 +1,17 @@
 #!/bin/sh
 
 
+
+########### LAYOUT #########
+bspc monitor HDMI-A-0 -d 1 2 3 4 5
+bspc monitor DVI-D-0 -d 6 7 8 9 10
+polybar -q  mainbar-bspwm -c "$HOME/.config/polybar/config.ini" &
+polybar -q  mainbar-bspwm-extra -c "$HOME/.config/polybar/config.ini" &
+nitrogen --restore &
+corectrl &
+  
+
+
 # set root pointer
 xsetroot -cursor_name left_ptr
 
@@ -18,12 +29,6 @@ bspc config external_rules_command "$HOME/.config/bspwm/scripts/external_rules" 
 
 
 
-
-
-
-########### LAYOUT #########
-bspc monitor HDMI-A-0 -d 1 2 3 4 5
-bspc monitor DVI-D-0 -d 6 7 8 9 10
 
 
 bspc config border_width 2
